@@ -5,7 +5,7 @@ name := """Lambda-Arch-Spark"""
 
 spName := "knoldus/Lambda-Arch-Spark"
 
-sparkVersion := "2.0.0"
+sparkVersion := "2.1.1"
 
 sparkComponents ++= Seq("core","streaming", "sql")
 
