@@ -5,6 +5,8 @@ import java.sql.Timestamp
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
+import org.apache.spark.sql.functions._
+
 /**
   * Udf example
   */
@@ -36,5 +38,14 @@ object UdfApp {
 
     val dataFrame = spark.sql("select yearOnYear(sales, saleDate) as yearOnYear from sales")
     dataFrame.show()
+
+    val gm = new GeometricMean
+    val df = spark.range(1, 11)
+
+    df.groupBy().agg(gm($"id").as("GeometricMean")).show
+
+    spark.udf.register("gm", gm)
+
+    df.groupBy().agg(expr("gm(id) as GeometricMean")).show
   }
 }
