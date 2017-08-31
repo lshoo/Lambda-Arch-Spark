@@ -29,9 +29,11 @@ object SparkOperation {
 
     override def tailRecM[A, B](a: A)(f: (A) => SparkOperation[Either[A, B]]): SparkOperation[B] = SparkOperation( ctx =>
       f(a).run(ctx) match {
-      case  Left(_) => throw new Exception(s"init SparkOperation use $a error")
-              
-      case Right(r) => r
+        case Right(r) => r
+
+        case  Left(l) if l.isInstanceOf[B] => l.asInstanceOf[B]
+
+        case _ => throw new Exception(s"init SparkOperation use $a happen error")
     } )
   }
 

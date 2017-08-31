@@ -6,9 +6,6 @@ name := """Lambda-Arch-Spark"""
 //spName := "knoldus/Lambda-Arch-Spark"
 
 //sparkComponents ++= Seq("core","streaming", "sql")
-sparkVersion := "2.1.1"
-
-sparkComponents ++= Seq("core","streaming", "sql")
 
 licenses += "Apache-2.0" -> url("http://opensource.org/licenses/Apache-2.0")
 
@@ -33,6 +30,6 @@ lazy val root = (project in file(".")).
     name := "Lambda-Arch-Spark",
     libraryDependencies ++= Seq(kafka, akkaHttp, lift, twitterStream, sparkStreamingKafka,
       sparkCassandraConnect, cassandraDriver, logback, akkaHttpJson, jansi, json4s,
-      cats, framelessCats, framelessDS, sparkCore, sparkSql
+      cats, framelessCats, framelessDS, sparkCore, sparkSql, sparkStreaming
     )
   )
