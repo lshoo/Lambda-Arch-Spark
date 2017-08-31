@@ -2,7 +2,10 @@ package com.knoldus.udfs
 
 import java.sql.Timestamp
 
+import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+
+import org.apache.spark.sql.functions._
 
 /**
   * Udf example
@@ -11,7 +14,8 @@ object UdfApp {
   def main(args: Array[String]): Unit = {
 
     //val spark = SparkSession.builder.config(sparkContext.getConf).getOrCreate()
-    val spark = SparkSession.builder().appName("TestUDF").getOrCreate()
+    val conf = new SparkConf().setAppName("TestUDF").setMaster("local[*]")
+    val spark = SparkSession.builder().config(conf).getOrCreate()
 
     import spark.implicits._
 
@@ -30,9 +34,18 @@ object UdfApp {
     val current = DateRange(Timestamp.valueOf("2015-01-01 00:00:00"), Timestamp.valueOf("2015-12-31 00:00:00"))
     val yearOnYear = new YearOnYearBasis(current)
 
-    spark.udf.register("earOnYear", yearOnYear)
+    spark.udf.register("yearOnYear", yearOnYear)
 
     val dataFrame = spark.sql("select yearOnYear(sales, saleDate) as yearOnYear from sales")
     dataFrame.show()
+
+    val gm = new GeometricMean
+    val df = spark.range(1, 11)
+
+    df.groupBy().agg(gm($"id").as("GeometricMean")).show
+
+    spark.udf.register("gm", gm)
+
+    df.groupBy().agg(expr("gm(id) as GeometricMean")).show
   }
 }
