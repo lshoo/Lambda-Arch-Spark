@@ -30,5 +30,8 @@ lazy val root = (project in file(".")).
   settings(commonSettings: _*).
   settings(
     name := "Lambda-Arch-Spark",
-    libraryDependencies ++= Seq(kafka, akkaHttp, lift, twitterStream, sparkStreamingKafka, sparkCassandraConnect, cassandraDriver, logback, akkaHttpJson, jansi, json4s)
+    libraryDependencies ++= Seq(kafka, akkaHttp, lift, twitterStream, sparkStreamingKafka,
+      sparkCassandraConnect, cassandraDriver, logback, akkaHttpJson, jansi, json4s,
+      cats, framelessCats, framelessDS, sparkCore, sparkSql
+    )
   )
